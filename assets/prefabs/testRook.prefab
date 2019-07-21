@@ -1,0 +1,11 @@
+{
+    "skeletalmesh" : {
+            "mesh" : "rook",
+            "heightOffset" : -0.8,
+            "material" : "blackRookSkin",
+            "animation" : "rookStill",
+            "loop" : true
+    },
+    "Network" : {},
+    "Location" : {}
+}
