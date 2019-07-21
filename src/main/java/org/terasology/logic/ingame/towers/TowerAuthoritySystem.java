@@ -15,7 +15,6 @@
  */
 package org.terasology.logic.ingame.towers;
 
-import com.google.common.collect.Lists;
 import org.terasology.assets.management.AssetManager;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -27,8 +26,9 @@ import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.logic.delay.DelayManager;
+import org.terasology.logic.delay.PeriodicActionTriggeredEvent;
 import org.terasology.logic.location.Location;
-import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.registry.In;
@@ -43,6 +43,8 @@ public class TowerAuthoritySystem extends BaseComponentSystem {
     private AssetManager assetManager;
     @In
     private EntityManager entityManager;
+    @In
+    private DelayManager delayManager;
 
     @ReceiveEvent
     public void onSettingsChanged(SendTowerActivationRequest event, EntityRef player) {
@@ -51,55 +53,67 @@ public class TowerAuthoritySystem extends BaseComponentSystem {
         towerComponent.isActivated = event.isActivated;
         if (event.isActivated) {
             if (towerComponent.childEntity.equals(EntityRef.NULL)) {
-                Prefab rookPrefab = assetManager.getAsset("Towers:testRook", Prefab.class).get();
-                EntityBuilder rookEntityBuilder = entityManager.newBuilder(rookPrefab);
-                rookEntityBuilder.setOwner(towerEntity);
-                rookEntityBuilder.setPersistent(false);
-                EntityRef rook = rookEntityBuilder.build();
-                towerComponent.childEntity = rook;
-                Location.attachChild(towerEntity, rook, new Vector3f(0, 1, 0), new Quat4f(Quat4f.IDENTITY));
+                activateTower(towerEntity, towerComponent);
             }
         } else {
-            towerComponent.childEntity.destroy();
-            towerComponent.childEntity = EntityRef.NULL;
+            deactivateTower(towerEntity, towerComponent);
         }
         towerEntity.saveComponent(towerComponent);
     }
 
     @ReceiveEvent(components = {BlockItemComponent.class})
-    public void onItemToBlock(OnBlockItemPlaced event, EntityRef itemEntity,
-                              TowerComponent towerComponent) {
+    public void onItemToBlock(OnBlockItemPlaced event, EntityRef itemEntity, TowerComponent towerComponent) {
         EntityRef towerEntity = event.getPlacedBlock();
         if (towerComponent.isActivated && towerComponent.childEntity.equals(EntityRef.NULL)) {
-            Prefab rookPrefab = assetManager.getAsset("Towers:testRook", Prefab.class).get();
-            EntityBuilder rookEntityBuilder = entityManager.newBuilder(rookPrefab);
-            rookEntityBuilder.setOwner(towerEntity);
-            rookEntityBuilder.setPersistent(false);
-            EntityRef rook = rookEntityBuilder.build();
-            towerComponent.childEntity = rook;
-            Location.attachChild(towerEntity, rook, new Vector3f(0, 1, 0), new Quat4f(Quat4f.IDENTITY));
+            activateTower(towerEntity, towerComponent);
         }
         towerEntity.addOrSaveComponent(towerComponent);
     }
 
     @ReceiveEvent
     public void onBlockToItem(OnBlockToItem event, EntityRef blockEntity, TowerComponent towerComponent) {
-        towerComponent.childEntity.destroy();
-        towerComponent.childEntity = EntityRef.NULL;
-        event.getItem().addComponent(towerComponent);
+        deactivateTower(blockEntity, towerComponent);
+        event.getItem().addOrSaveComponent(towerComponent);
     }
 
     @ReceiveEvent(priority = EventPriority.PRIORITY_HIGH, components = {TowerComponent.class, BlockComponent.class})
-    public void onTowerActivated(OnActivatedComponent event, EntityRef towerEntity,
-                                 TowerComponent towerComponent) {
+    public void onTowerActivated(OnActivatedComponent event, EntityRef towerEntity, TowerComponent towerComponent) {
         if (towerComponent.isActivated && towerComponent.childEntity.equals(EntityRef.NULL)) {
-            Prefab rookPrefab = assetManager.getAsset("Towers:testRook", Prefab.class).get();
-            EntityBuilder rookEntityBuilder = entityManager.newBuilder(rookPrefab);
-            rookEntityBuilder.setOwner(towerEntity);
-            rookEntityBuilder.setPersistent(false);
-            EntityRef rook = rookEntityBuilder.build();
-            towerComponent.childEntity = rook;
-            Location.attachChild(towerEntity, rook, new Vector3f(0, 1, 0), new Quat4f(Quat4f.IDENTITY));
+            activateTower(towerEntity, towerComponent);
         }
+    }
+
+    @ReceiveEvent
+    public void onPeriodicActionTriggered(PeriodicActionTriggeredEvent event, EntityRef towerEntity, TowerComponent towerComponent) {
+        if (getActionId(towerEntity.getId()).equals(event.getActionId())) {
+//            handleShooting();
+        }
+    }
+
+    private void activateTower(EntityRef towerEntity, TowerComponent towerComponent) {
+        Prefab rookPrefab = assetManager.getAsset("Towers:testRook", Prefab.class).get();
+        EntityBuilder rookEntityBuilder = entityManager.newBuilder(rookPrefab);
+        rookEntityBuilder.setOwner(towerEntity);
+        rookEntityBuilder.setPersistent(false);
+        EntityRef rook = rookEntityBuilder.build();
+        towerComponent.childEntity = rook;
+        Location.attachChild(towerEntity, rook, new Vector3f(0, 1, 0), new Quat4f(Quat4f.IDENTITY));
+
+        if (!delayManager.hasPeriodicAction(towerEntity, getActionId(towerEntity.getId()))) {
+            delayManager.addPeriodicAction(towerEntity, getActionId(towerEntity.getId()),1000,1000);
+        }
+    }
+
+    private void deactivateTower(EntityRef towerEntity, TowerComponent towerComponent) {
+        towerComponent.childEntity.destroy();
+        towerComponent.childEntity = EntityRef.NULL;
+
+        if (delayManager.hasPeriodicAction(towerEntity, getActionId(towerEntity.getId()))) {
+            delayManager.cancelPeriodicAction(towerEntity, getActionId(towerEntity.getId()));
+        }
+    }
+
+    private String getActionId(long id) {
+        return "targetEnemies_" + id;
     }
 }
