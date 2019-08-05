@@ -16,7 +16,7 @@
 package org.terasology.rendering.nui.towers;
 
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.ingame.towers.SendTowerActivationRequest;
+import org.terasology.logic.ingame.towers.ActivateTowerRequest;
 import org.terasology.logic.ingame.towers.TowerComponent;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
@@ -64,7 +64,7 @@ public class TowerSettingsScreen extends BaseInteractionScreen {
     }
 
     private void onSaveButton(UIWidget button) {
-        localPlayer.getClientEntity().send(new SendTowerActivationRequest(towerRoot, isActivated.isChecked()));
+        localPlayer.getClientEntity().send(new ActivateTowerRequest(towerRoot, isActivated.isChecked()));
         getManager().popScreen();
     }
 

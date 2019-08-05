@@ -20,14 +20,14 @@ import org.terasology.entitySystem.event.Event;
 import org.terasology.network.ServerEvent;
 
 @ServerEvent
-public class SendTowerActivationRequest implements Event {
+public class ActivateTowerRequest implements Event {
     public EntityRef towerEntity;
     public boolean isActivated;
 
-    public SendTowerActivationRequest() {
+    public ActivateTowerRequest() {
     }
 
-    public SendTowerActivationRequest(EntityRef towerEntity, boolean isActivated) {
+    public ActivateTowerRequest(EntityRef towerEntity, boolean isActivated) {
         this.towerEntity = towerEntity;
         this.isActivated = isActivated;
     }

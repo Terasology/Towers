@@ -47,7 +47,7 @@ public class TowerAuthoritySystem extends BaseComponentSystem {
     private DelayManager delayManager;
 
     @ReceiveEvent
-    public void onSettingsChanged(SendTowerActivationRequest event, EntityRef player) {
+    public void onSettingsChanged(ActivateTowerRequest event, EntityRef player) {
         EntityRef towerEntity = event.towerEntity;
         TowerComponent towerComponent = towerEntity.getComponent(TowerComponent.class);
         towerComponent.isActivated = event.isActivated;
