@@ -15,7 +15,9 @@
  */
 package org.terasology.logic.ingame.towers;
 
+import org.terasology.alterationEffects.damageOverTime.DamageOverTimeAlterationEffect;
 import org.terasology.assets.management.AssetManager;
+import org.terasology.context.Context;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -29,13 +31,17 @@ import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.delay.DelayManager;
 import org.terasology.logic.delay.PeriodicActionTriggeredEvent;
 import org.terasology.logic.location.Location;
+import org.terasology.logic.location.LocationComponent;
 import org.terasology.math.geom.Quat4f;
 import org.terasology.math.geom.Vector3f;
+import org.terasology.protobuf.EntityData;
 import org.terasology.registry.In;
 import org.terasology.world.block.BlockComponent;
 import org.terasology.world.block.items.BlockItemComponent;
 import org.terasology.world.block.items.OnBlockItemPlaced;
 import org.terasology.world.block.items.OnBlockToItem;
+
+import java.util.Set;
 
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class TowerAuthoritySystem extends BaseComponentSystem {
@@ -45,6 +51,10 @@ public class TowerAuthoritySystem extends BaseComponentSystem {
     private EntityManager entityManager;
     @In
     private DelayManager delayManager;
+    @In
+    private PlayerManager playerManager;
+    @In
+    private Context context;
 
     @ReceiveEvent
     public void onSettingsChanged(ActivateTowerRequest event, EntityRef player) {
@@ -84,9 +94,10 @@ public class TowerAuthoritySystem extends BaseComponentSystem {
     }
 
     @ReceiveEvent
-    public void onPeriodicActionTriggered(PeriodicActionTriggeredEvent event, EntityRef towerEntity, TowerComponent towerComponent) {
+    public void onPeriodicActionTriggered(PeriodicActionTriggeredEvent event, EntityRef towerEntity,
+                                          TowerComponent towerComponent, LocationComponent locationComponent) {
         if (getActionId(towerEntity.getId()).equals(event.getActionId())) {
-//            handleShooting();
+            damageEnemiesInRange(towerEntity, locationComponent, towerComponent, playerManager.getAliveCharacters());
         }
     }
 
@@ -115,5 +126,18 @@ public class TowerAuthoritySystem extends BaseComponentSystem {
 
     private String getActionId(long id) {
         return "targetEnemies_" + id;
+    }
+
+    private void damageEnemiesInRange(EntityRef towerEntity, LocationComponent locationComponent, TowerComponent towerComponent,
+                                      Set<EntityRef> aliveCharacters) {
+        float rangeSqrd = towerComponent.range * towerComponent.range;
+        Vector3f towerLocation = locationComponent.getWorldPosition();
+        for (EntityRef aliveCharacter: aliveCharacters) {
+            Vector3f playerLocation = aliveCharacter.getComponent(LocationComponent.class).getWorldPosition();
+            if (playerLocation.distanceSquared(towerLocation) <= rangeSqrd) {
+                DamageOverTimeAlterationEffect dotEffect = new DamageOverTimeAlterationEffect(context);
+                dotEffect.applyEffect(towerEntity, aliveCharacter, 10, 1000);
+            }
+        }
     }
 }
