@@ -25,5 +25,7 @@ public class TowerComponent implements Component {
     @Replicate
     public boolean isActivated = false;
     @Replicate
+    public int range = 10;
+    @Replicate
     public EntityRef childEntity = EntityRef.NULL;
 }
