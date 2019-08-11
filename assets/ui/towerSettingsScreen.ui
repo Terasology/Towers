@@ -1,0 +1,83 @@
+{
+  "type": "TowerSettingsScreen",
+  "skin": "engine:default",
+  "contents": {
+    "type": "RelativeLayout",
+    "contents": [
+      {
+        "type": "ScrollableArea",
+        "id": "scrollArea",
+        "content": {
+          "type": "ColumnLayout",
+          "columns": 1,
+          "verticalSpacing": 8,
+          "contents": [
+            {
+              "type": "UILabel",
+              "family": "subheading",
+              "text": "Tower"
+            },
+            {
+              "type": "UILabel",
+              "text": "Change settings for the tower"
+            },
+            {
+              "type": "UISpace",
+              "size": [
+                1,
+                12
+              ]
+            },
+            {
+              "type": "ColumnLayout",
+              "columns": 2,
+              "verticalSpacing": 8,
+              "horizontalSpacing": 8,
+              "contents": [
+                {
+                  "type": "UILabel",
+                  "text": "isActivated"
+                },
+                {
+                  "type": "UICheckbox",
+                  "id": "isActivated"
+                }
+              ]
+            }
+          ]
+        },
+        "layoutInfo": {
+          "width": 500,
+          "height": 400,
+          "position-horizontal-center": {},
+          "position-vertical-center": {}
+        }
+      },
+      {
+        "type": "engine:RowLayout",
+        "id": "actionsRow",
+        "contents": [
+          {
+            "type": "UIButton",
+            "text": "${engine:menu#dialog-cancel}",
+            "id": "cancelButton"
+          },
+          {
+            "type": "UIButton",
+            "text": "${engine:menu#dialog-ok}",
+            "id": "saveButton"
+          }
+        ],
+        "layoutInfo": {
+          "height": 32,
+          "width": 500,
+          "position-horizontal-center": {},
+          "position-top": {
+            "widget": "scrollArea",
+            "target": "BOTTOM"
+          }
+        }
+      }
+    ]
+  }
+}

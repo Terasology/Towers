@@ -4,6 +4,7 @@
     "author" : "darshan3",
     "displayName" : "Towers",
     "description" : "",
-    "dependencies" : [{"id" : "LightAndShadowResources", "minVersion" : "0.2.0"}],
+    "dependencies" : [{"id" : "LightAndShadowResources", "minVersion" : "0.2.0"},
+                      {"id" : "AlterationEffects", "minVersion" : "1.0.1"}],
     "serverSideOnly" : false
 }

@@ -1,0 +1,13 @@
+{
+    "displayName" : "Tower Root",
+    "hardness" : 10,
+    "tile" : "Core:HardStone",
+    "entity" : {
+        "prefab" : "Towers:towerRoot"
+    },
+    "attachmentAllowed": false,
+    "debrisOnDestroy": false,
+    "inventory" : {
+        "stackable": false
+    }
+}
