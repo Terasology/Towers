@@ -5,5 +5,5 @@
     "displayName" : "Towers",
     "description" : "",
     "dependencies" : [],
-    "isServerSideOnly" : false
+    "serverSideOnly" : false
 }
