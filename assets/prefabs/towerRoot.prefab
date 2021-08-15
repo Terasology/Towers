@@ -1,9 +1,0 @@
-{
-  "Tower": {},
-  "InteractionTarget": {},
-  "InteractionScreen": {
-    "screen": "Towers:TowerSettingsScreen"
-  },
-  "Network": {
-  }
-}
