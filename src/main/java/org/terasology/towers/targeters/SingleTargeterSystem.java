@@ -3,8 +3,6 @@
 package org.terasology.towers.targeters;
 
 import org.joml.Vector3f;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.event.ReceiveEvent;
@@ -25,7 +23,6 @@ public class SingleTargeterSystem extends BaseComponentSystem {
 
     @In
     private EntityManager entityManager;
-    private static final Logger logger = LoggerFactory.getLogger(SingleTargeterSystem.class);
     /**
      * Determine which enemies should be attacked.
      * Called against the targeter entity.
@@ -37,11 +34,11 @@ public class SingleTargeterSystem extends BaseComponentSystem {
     @ReceiveEvent
     public void onDoSelectEnemies(SelectEnemiesEvent event, EntityRef entity, LocationComponent locationComponent, SingleTargeterComponent targeterComponent) {
         for (EntityRef player : entityManager.getEntitiesWith(PlayerCharacterComponent.class)) {
-            Vector3f l1 = new Vector3f();
-            Vector3f l2 = new Vector3f();
-            player.getComponent(LocationComponent.class).getWorldPosition(l1);
-            locationComponent.getWorldPosition(l2);
-            float distance = l1.distance(l2);
+            Vector3f playerLoc = new Vector3f();
+            Vector3f towerLoc = new Vector3f();
+            player.getComponent(LocationComponent.class).getWorldPosition(playerLoc);
+            locationComponent.getWorldPosition(towerLoc);
+            float distance = playerLoc.distance(towerLoc);
             if (distance < 15) {
                 event.addToList(player);
                 break;

@@ -12,11 +12,9 @@ import org.terasology.engine.entitySystem.event.Event;
  */
 public class RemoveEffectEvent implements Event {
     private final EntityRef target;
-    private final float multiplier;
 
-    public RemoveEffectEvent(EntityRef target, float multiplier) {
+    public RemoveEffectEvent(EntityRef target) {
         this.target = target;
-        this.multiplier = multiplier;
     }
 
     /**
@@ -24,12 +22,5 @@ public class RemoveEffectEvent implements Event {
      */
     public EntityRef getTarget() {
         return target;
-    }
-
-    /**
-     * @return The moderating damage multiplier to use for this effect
-     */
-    public float getMultiplier() {
-        return multiplier;
     }
 }

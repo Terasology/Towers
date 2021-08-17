@@ -5,7 +5,6 @@ package org.terasology.towers.events;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.event.Event;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,13 +23,6 @@ public class SelectEnemiesEvent implements Event {
      */
     public Set<EntityRef> getTargets() {
         return targets;
-    }
-
-    /**
-     * @param newTargets A collection of all the enemies to add to the target list
-     */
-    public void addToList(Collection<EntityRef> newTargets) {
-        this.targets.addAll(newTargets);
     }
 
     /**

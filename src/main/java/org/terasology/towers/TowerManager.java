@@ -36,19 +36,6 @@ public class TowerManager extends BaseComponentSystem {
     private EntityManager entityManager;
     private static final Logger logger = LoggerFactory.getLogger(TowerManager.class);
 
-    /**
-     * Remove all scheduled delays before the game is shutdown.
-     */
-    @Override
-    public void shutdown() {
-        for (EntityRef tower : towerEntities) {
-            TowerComponent towerComponent = tower.getComponent(TowerComponent.class);
-            EntityRef targeter = towerComponent.targeter;
-            delayManager.cancelPeriodicAction(tower, buildEventId(targeter));
-            tower.destroy();
-        }
-    }
-
 
     /**
      * Called when a tower is created.
@@ -113,7 +100,7 @@ public class TowerManager extends BaseComponentSystem {
         TowerComponent towerComponent = tower.getComponent(TowerComponent.class);
         TowerTargeter targeterComponent = DefenceField.getComponentExtending(targeter, TowerTargeter.class);
         for (EntityRef enemy : targeterComponent.affectedEnemies) {
-            endEffects(towerComponent.effector, enemy, targeterComponent.getMultiplier());
+            endEffects(towerComponent.effector, enemy);
         }
     }
 
@@ -163,7 +150,7 @@ public class TowerManager extends BaseComponentSystem {
 
         /* Process all the enemies that are no longer targeted */
         for (EntityRef exTarget : exTargets) {
-            endEffects(effectors, exTarget, towerTargeter.getMultiplier());
+            endEffects(effectors, exTarget);
         }
     }
 
@@ -197,10 +184,9 @@ public class TowerManager extends BaseComponentSystem {
      *
      * @param effector  The effectors to check through
      * @param oldTarget  The target to remove the effects from
-     * @param multiplier The effect multiplier to apply to the event
      */
-    private void endEffects(EntityRef effector, EntityRef oldTarget, float multiplier) {
-        RemoveEffectEvent event = new RemoveEffectEvent(oldTarget, multiplier);
+    private void endEffects(EntityRef effector, EntityRef oldTarget) {
+        RemoveEffectEvent event = new RemoveEffectEvent(oldTarget);
         TowerEffector effectorComponent = DefenceField.getComponentExtending(effector, TowerEffector.class);
         switch (effectorComponent.getEffectDuration()) {
             case LASTING:
