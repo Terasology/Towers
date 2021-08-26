@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.towers.components;
 
-import org.terasology.engine.entitySystem.Component;
+import com.google.common.collect.Sets;
 import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.gestalt.entitysystem.component.Component;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +17,7 @@ import java.util.Set;
  * Provides a number of common properties.
  *
  */
-public abstract class TowerTargeter implements Component {
+public abstract class TowerTargeter<T extends TowerTargeter> implements Component<T> {
     /**
      * How much energy this targeter will use
      */
@@ -44,4 +45,11 @@ public abstract class TowerTargeter implements Component {
      */
     public abstract float getMultiplier();
 
+    @Override
+    public void copyFrom(T other) {
+        this.drain = other.drain;
+        this.range = other.range;
+        this.attackSpeed = other.attackSpeed;
+        this.affectedEnemies = Sets.newHashSet(other.affectedEnemies);
+    }
 }

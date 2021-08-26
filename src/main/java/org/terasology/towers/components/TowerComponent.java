@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.towers.components;
 
-import org.terasology.engine.entitySystem.Component;
+import com.google.common.collect.Sets;
 import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.gestalt.entitysystem.component.Component;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,9 +15,17 @@ import java.util.Set;
  * <p>
  * Only collates together the component parts of the tower.
  */
-public class TowerComponent implements Component {
+public class TowerComponent implements Component<TowerComponent> {
     public Set<EntityRef> cores = new HashSet<>();
     public Set<EntityRef> effector = new HashSet<>();
     public Set<EntityRef> targeter = new HashSet<>();
     public Set<EntityRef> plains = new HashSet<>();
+
+    @Override
+    public void copyFrom(TowerComponent other) {
+        this.cores = Sets.newHashSet(other.cores);
+        this.effector = Sets.newHashSet(other.effector);
+        this.targeter = Sets.newHashSet(other.targeter);
+        this.plains = Sets.newHashSet(other.plains);
+    }
 }

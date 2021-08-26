@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.towers.components;
 
-import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.world.block.ForceBlockActive;
+import org.terasology.gestalt.entitysystem.component.Component;
 
 /**
  * Used to mark the block as being used in towers.
@@ -14,7 +14,7 @@ import org.terasology.engine.world.block.ForceBlockActive;
  * @see TowerComponent
  */
 @ForceBlockActive
-public class TowerMultiBlockComponent implements Component {
+public class TowerMultiBlockComponent implements Component<TowerMultiBlockComponent> {
     private EntityRef towerEntity = EntityRef.NULL;
 
     public EntityRef getTowerEntity() {
@@ -23,5 +23,10 @@ public class TowerMultiBlockComponent implements Component {
 
     public void setTowerEntity(EntityRef towerEntity) {
         this.towerEntity = towerEntity;
+    }
+
+    @Override
+    public void copyFrom(TowerMultiBlockComponent other) {
+        this.towerEntity = other.towerEntity;
     }
 }

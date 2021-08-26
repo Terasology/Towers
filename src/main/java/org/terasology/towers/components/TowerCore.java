@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.towers.components;
 
-import org.terasology.engine.entitySystem.Component;
+import org.terasology.gestalt.entitysystem.component.Component;
 
 /**
  * Base class for all the Core blocks
@@ -12,10 +12,14 @@ import org.terasology.engine.entitySystem.Component;
  * @see TowerEffector
  * @see TowerTargeter
  */
-public abstract class TowerCore implements Component {
+public abstract class TowerCore implements Component<TowerCore> {
     /**
      * The power this core provides
      */
     public int power;
 
+    @Override
+    public void copyFrom(TowerCore other) {
+        this.power = other.power;
+    }
 }

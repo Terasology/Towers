@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.towers.components;
 
-import org.terasology.engine.entitySystem.Component;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.towers.EffectCount;
 import org.terasology.towers.EffectDuration;
 
@@ -15,7 +15,7 @@ import org.terasology.towers.EffectDuration;
  * @see TowerCore
  * @see TowerTargeter
  */
-public abstract class TowerEffector implements Component {
+public abstract class TowerEffector<T extends TowerEffector> implements Component<T> {
     /**
      * The amount of power that the effector requires
      */
@@ -36,4 +36,8 @@ public abstract class TowerEffector implements Component {
      */
     public abstract EffectDuration getEffectDuration();
 
+    @Override
+    public void copyFrom(T other) {
+        this.drain = other.drain;
+    }
 }
