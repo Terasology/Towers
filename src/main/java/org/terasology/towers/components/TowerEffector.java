@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.towers.components;
 
-import org.terasology.engine.entitySystem.Component;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.towers.EffectCount;
 import org.terasology.towers.EffectDuration;
 
@@ -12,7 +12,7 @@ import org.terasology.towers.EffectDuration;
  * Effectors apply damage and special effects to the enemies.
  * @see TowerTargeter
  */
-public abstract class TowerEffector implements Component {
+public abstract class TowerEffector<T extends TowerEffector> implements Component<T> {
     /**
      * Controls how often the effect should be applied on a more abstract level.
      *
