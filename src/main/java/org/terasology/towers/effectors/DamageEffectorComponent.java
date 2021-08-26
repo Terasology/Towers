@@ -12,7 +12,7 @@ import org.terasology.towers.components.TowerEffector;
  * @see DamageEffectorSystem
  * @see TowerEffector
  */
-public class DamageEffectorComponent extends TowerEffector {
+public class DamageEffectorComponent extends TowerEffector<DamageEffectorComponent> {
     /**
      * The damage to apply to the targets.
      */
@@ -26,5 +26,10 @@ public class DamageEffectorComponent extends TowerEffector {
     @Override
     public EffectDuration getEffectDuration() {
         return EffectDuration.INSTANT;
+    }
+
+    @Override
+    public void copyFrom(DamageEffectorComponent other) {
+        this.damage = other.damage;
     }
 }

@@ -43,7 +43,6 @@ public abstract class TowerTargeter<T extends TowerTargeter> implements Componen
 
     @Override
     public void copyFrom(T other) {
-        this.drain = other.drain;
         this.range = other.range;
         this.attackSpeed = other.attackSpeed;
         this.affectedEnemies = Sets.newHashSet(other.affectedEnemies);

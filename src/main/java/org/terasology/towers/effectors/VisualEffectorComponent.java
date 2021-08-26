@@ -12,7 +12,7 @@ import org.terasology.towers.components.TowerEffector;
  *
  * @see TowerEffector
  */
-public class VisualEffectorComponent extends TowerEffector {
+public class VisualEffectorComponent extends TowerEffector<VisualEffectorComponent> {
     @Override
     public EffectCount getEffectCount() {
         return EffectCount.CONTINUOUS;
@@ -22,4 +22,7 @@ public class VisualEffectorComponent extends TowerEffector {
     public EffectDuration getEffectDuration() {
         return EffectDuration.LASTING;
     }
+
+    @Override
+    public void copyFrom(VisualEffectorComponent other) { }
 }

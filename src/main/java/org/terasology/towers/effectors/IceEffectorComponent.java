@@ -13,7 +13,7 @@ import org.terasology.towers.components.TowerEffector;
  * @see IceEffectorSystem
  * @see TowerEffector
  */
-public class IceEffectorComponent extends TowerEffector {
+public class IceEffectorComponent extends TowerEffector<IceEffectorComponent> {
     /**
      * A multiplier for the enemies speed.
      * 0.9 will make them 10% slower, or 90% of their full speed;
@@ -28,5 +28,10 @@ public class IceEffectorComponent extends TowerEffector {
     @Override
     public EffectDuration getEffectDuration() {
         return EffectDuration.LASTING;
+    }
+
+    @Override
+    public void copyFrom(IceEffectorComponent other) {
+        this.slow = other.slow;
     }
 }
