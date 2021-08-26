@@ -15,22 +15,22 @@
  */
 package org.terasology.logic.ingame.towers;
 
-import org.terasology.engine.modes.loadProcesses.AwaitedLocalCharacterSpawnEvent;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.EventPriority;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.characters.AliveCharacterComponent;
-import org.terasology.logic.characters.CharacterComponent;
-import org.terasology.logic.health.BeforeDestroyEvent;
-import org.terasology.logic.players.PlayerCharacterComponent;
-import org.terasology.logic.players.event.OnPlayerRespawnedEvent;
-import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
-import org.terasology.registry.In;
-import org.terasology.registry.Share;
+import org.terasology.engine.core.modes.loadProcesses.AwaitedLocalCharacterSpawnEvent;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.event.EventPriority;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.characters.AliveCharacterComponent;
+import org.terasology.engine.logic.characters.CharacterComponent;
+import org.terasology.engine.logic.health.BeforeDestroyEvent;
+import org.terasology.engine.logic.players.event.OnPlayerRespawnedEvent;
+import org.terasology.engine.logic.players.event.OnPlayerSpawnedEvent;
+import org.terasology.engine.logic.players.PlayerCharacterComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.registry.Share;
 
 import java.util.HashSet;
 import java.util.Set;

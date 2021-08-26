@@ -15,9 +15,9 @@
  */
 package org.terasology.logic.ingame.towers;
 
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
 
 @RegisterSystem(RegisterMode.CLIENT)
 public class TowerClientSystem extends BaseComponentSystem {

@@ -15,31 +15,32 @@
  */
 package org.terasology.logic.ingame.towers;
 
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+import org.joml.Vector3fc;
 import org.terasology.alterationEffects.damageOverTime.DamageOverTimeAlterationEffect;
-import org.terasology.assets.management.AssetManager;
-import org.terasology.context.Context;
-import org.terasology.entitySystem.entity.EntityBuilder;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
-import org.terasology.entitySystem.event.EventPriority;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.delay.DelayManager;
-import org.terasology.logic.delay.PeriodicActionTriggeredEvent;
-import org.terasology.logic.location.Location;
-import org.terasology.logic.location.LocationComponent;
+import org.terasology.engine.context.Context;
+import org.terasology.engine.entitySystem.entity.EntityBuilder;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.lifecycleEvents.OnActivatedComponent;
+import org.terasology.engine.entitySystem.event.EventPriority;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.delay.DelayManager;
+import org.terasology.engine.logic.delay.PeriodicActionTriggeredEvent;
+import org.terasology.engine.logic.location.Location;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.block.BlockComponent;
+import org.terasology.engine.world.block.items.BlockItemComponent;
+import org.terasology.engine.world.block.items.OnBlockItemPlaced;
+import org.terasology.engine.world.block.items.OnBlockToItem;
+import org.terasology.gestalt.assets.management.AssetManager;
 import org.terasology.math.geom.Quat4f;
-import org.terasology.math.geom.Vector3f;
-import org.terasology.protobuf.EntityData;
-import org.terasology.registry.In;
-import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.items.BlockItemComponent;
-import org.terasology.world.block.items.OnBlockItemPlaced;
-import org.terasology.world.block.items.OnBlockToItem;
 
 import java.util.Set;
 
@@ -108,7 +109,7 @@ public class TowerAuthoritySystem extends BaseComponentSystem {
         rookEntityBuilder.setPersistent(false);
         EntityRef rook = rookEntityBuilder.build();
         towerComponent.childEntity = rook;
-        Location.attachChild(towerEntity, rook, new Vector3f(0, 1, 0), new Quat4f(Quat4f.IDENTITY));
+        Location.attachChild(towerEntity, rook, new Vector3f(0, 1, 0), new Quaternionf().identity());
 
         if (!delayManager.hasPeriodicAction(towerEntity, getActionId(towerEntity.getId()))) {
             delayManager.addPeriodicAction(towerEntity, getActionId(towerEntity.getId()),1000,1000);
@@ -131,9 +132,9 @@ public class TowerAuthoritySystem extends BaseComponentSystem {
     private void damageEnemiesInRange(EntityRef towerEntity, LocationComponent locationComponent, TowerComponent towerComponent,
                                       Set<EntityRef> aliveCharacters) {
         float rangeSqrd = towerComponent.range * towerComponent.range;
-        Vector3f towerLocation = locationComponent.getWorldPosition();
+        Vector3f towerLocation = locationComponent.getWorldPosition(new Vector3f());
         for (EntityRef aliveCharacter: aliveCharacters) {
-            Vector3f playerLocation = aliveCharacter.getComponent(LocationComponent.class).getWorldPosition();
+            Vector3f playerLocation = aliveCharacter.getComponent(LocationComponent.class).getWorldPosition(new Vector3f());
             if (playerLocation.distanceSquared(towerLocation) <= rangeSqrd) {
                 DamageOverTimeAlterationEffect dotEffect = new DamageOverTimeAlterationEffect(context);
                 dotEffect.applyEffect(towerEntity, aliveCharacter, 10, 1000);

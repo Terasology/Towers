@@ -15,17 +15,17 @@
  */
 package org.terasology.rendering.nui.towers;
 
-import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.logic.players.LocalPlayer;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.rendering.nui.BaseInteractionScreen;
+import org.terasology.engine.rendering.nui.NUIManager;
 import org.terasology.logic.ingame.towers.ActivateTowerRequest;
 import org.terasology.logic.ingame.towers.TowerComponent;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.players.LocalPlayer;
-import org.terasology.registry.In;
-import org.terasology.rendering.nui.BaseInteractionScreen;
-import org.terasology.rendering.nui.NUIManager;
-import org.terasology.rendering.nui.UIWidget;
-import org.terasology.rendering.nui.widgets.UIButton;
-import org.terasology.rendering.nui.widgets.UICheckbox;
+import org.terasology.nui.UIWidget;
+import org.terasology.nui.widgets.UIButton;
+import org.terasology.nui.widgets.UICheckbox;
 
 public class TowerSettingsScreen extends BaseInteractionScreen {
     private UICheckbox isActivated;
